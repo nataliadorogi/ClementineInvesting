@@ -63,7 +63,7 @@
 	function getUserByUserName($Username) {
 		$mysqli = getDB();
 
-	   	$statement = $mysqli->prepare("SELECT * FROM users WHERE Usernam='$Username'");
+	   	$statement = $mysqli->prepare("SELECT * FROM users WHERE Username='$Username'");
 	    $statement->execute();
 	    $result = $statement->get_result();
 	    $resultArray = $result->fetch_all(MYSQLI_NUM);
@@ -82,5 +82,16 @@
 
 	function getGroupsByUser($UserID) {
 	    return explode(";", getUser($UserID)[0][8]);
+	}
+
+	function getMessages($GroupID) {
+		$mysqli = getDB();
+
+	   	$statement = $mysqli->prepare("SELECT * FROM messages WHERE GroupID='$GroupID'");
+	    $statement->execute();
+	    $result = $statement->get_result();
+	    $resultArray = $result->fetch_all(MYSQLI_NUM);
+
+	    return $resultArray;
 	}
 ?>

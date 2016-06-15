@@ -2,5 +2,6 @@
 
 require 'db_manager.php';
 
-echo "Clementine";
+echo "Clementine <pre>";
+var_dump(getMessages(1));
 ?>
