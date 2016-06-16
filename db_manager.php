@@ -29,6 +29,7 @@
 		$insert->execute();
 	}
 
+	// TODO MYSQL SHA1 for Password Encrption
 	function addUser($firstname, $lastname, $email, $dateofbirth, $ssn, $username, $password) {
 	    $mysqli = getDB();
 
@@ -38,33 +39,57 @@
 	    $insert->execute();
 	}
 
-	function getUserByID($UserID) {
+	// function getUserByID($UserID) {
+	// 	$mysqli = getDB();
+
+	//    	$statement = $mysqli->prepare("SELECT * FROM users WHERE ID='$UserID'");
+	//     $statement->execute();
+	//     $result = $statement->get_result();
+	//     $resultArray = $result->fetch_all(MYSQLI_NUM);
+
+	//     return $resultArray;
+	// }
+
+	// function getUserByEmail($UserEmail) {
+	// 	$mysqli = getDB();
+
+	//    	$statement = $mysqli->prepare("SELECT * FROM users WHERE Email='$UserEmail'");
+	//     $statement->execute();
+	//     $result = $statement->get_result();
+	//     $resultArray = $result->fetch_all(MYSQLI_NUM);
+
+	//     return $resultArray;
+	// }
+
+	// function getUserByUserName($Username) {
+	// 	$mysqli = getDB();
+
+	//    	$statement = $mysqli->prepare("SELECT * FROM users WHERE Username='$Username'");
+	//     $statement->execute();
+	//     $result = $statement->get_result();
+	//     $resultArray = $result->fetch_all(MYSQLI_NUM);
+
+	//     return $resultArray;
+	// }
+
+	function getUser($Identifier, $Method) {
 		$mysqli = getDB();
 
-	   	$statement = $mysqli->prepare("SELECT * FROM users WHERE ID='$UserID'");
-	    $statement->execute();
-	    $result = $statement->get_result();
-	    $resultArray = $result->fetch_all(MYSQLI_NUM);
+		switch ($Method) {
+		    case 0: // By User ID
+		        $statement = $mysqli->prepare("SELECT * FROM users WHERE ID='$Identifier'");
+		        break;
+		    case 1: // By Email Address
+		        $statement = $mysqli->prepare("SELECT * FROM users WHERE Email='$Identifier'");
+		        break;
+		    case 2: // By Username
+		        $statement = $mysqli->prepare("SELECT * FROM users WHERE Username='$Identifier'");
+		        break;
+		    default:
+		        $statement = $mysqli->prepare("SELECT * FROM users WHERE Username='$Identifier'");
+		}
 
-	    return $resultArray;
-	}
-
-	function getUserByEmail($UserEmail) {
-		$mysqli = getDB();
-
-	   	$statement = $mysqli->prepare("SELECT * FROM users WHERE Email='$UserEmail'");
-	    $statement->execute();
-	    $result = $statement->get_result();
-	    $resultArray = $result->fetch_all(MYSQLI_NUM);
-
-	    return $resultArray;
-	}
-
-	function getUserByUserName($Username) {
-		$mysqli = getDB();
-
-	   	$statement = $mysqli->prepare("SELECT * FROM users WHERE Username='$Username'");
-	    $statement->execute();
+		$statement->execute();
 	    $result = $statement->get_result();
 	    $resultArray = $result->fetch_all(MYSQLI_NUM);
 
@@ -84,6 +109,7 @@
 	    return explode(";", getUser($UserID)[0][8]);
 	}
 
+	// TODO get messages securely
 	function getMessages($GroupID) {
 		$mysqli = getDB();
 
