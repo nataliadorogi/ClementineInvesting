@@ -20,14 +20,7 @@
 	    return ($mysqli = new mysqli($db_server, $db_username, $db_password, $db_name));
 	}
 
-	function sendMessage($GroupID, $Message, $SendTime, $Sender) {
-		$mysqli = getDB();
-
-		$insert = $mysqli->prepare("INSERT INTO messages (ID, GroupID, Message, SendTime, Sender) VALUES (?,?,?,?,?)");
-
-		$insert->bind_param('iisss', $x=0, $GroupID, $Message, $SendTime, $Sender);
-		$insert->execute();
-	}
+// Users, General User Actions, Get User Information\
 
 	// TODO MYSQL SHA1 for Password Encrption
 	function addUser($firstname, $lastname, $email, $dateofbirth, $ssn, $username, $password) {
@@ -38,39 +31,6 @@
 	    $insert->bind_param('isssssss', $x=0, $firstname, $lastname, $email, $dateofbirth, $ssn, $username, $password);
 	    $insert->execute();
 	}
-
-	// function getUserByID($UserID) {
-	// 	$mysqli = getDB();
-
-	//    	$statement = $mysqli->prepare("SELECT * FROM users WHERE ID='$UserID'");
-	//     $statement->execute();
-	//     $result = $statement->get_result();
-	//     $resultArray = $result->fetch_all(MYSQLI_NUM);
-
-	//     return $resultArray;
-	// }
-
-	// function getUserByEmail($UserEmail) {
-	// 	$mysqli = getDB();
-
-	//    	$statement = $mysqli->prepare("SELECT * FROM users WHERE Email='$UserEmail'");
-	//     $statement->execute();
-	//     $result = $statement->get_result();
-	//     $resultArray = $result->fetch_all(MYSQLI_NUM);
-
-	//     return $resultArray;
-	// }
-
-	// function getUserByUserName($Username) {
-	// 	$mysqli = getDB();
-
-	//    	$statement = $mysqli->prepare("SELECT * FROM users WHERE Username='$Username'");
-	//     $statement->execute();
-	//     $result = $statement->get_result();
-	//     $resultArray = $result->fetch_all(MYSQLI_NUM);
-
-	//     return $resultArray;
-	// }
 
 	function getUser($Identifier, $Method) {
 		$mysqli = getDB();
@@ -96,6 +56,17 @@
 	    return $resultArray;
 	}
 
+	function validateUser($Email, $Password) {
+		if(getUser($Email, 1)[0][7] == $Password) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+
+// Groups && Group Management
+	
 	function addGroup($name, $users) {
 		$mysqli = getDB();
 
@@ -109,6 +80,8 @@
 	    return explode(";", getUser($UserID)[0][8]);
 	}
 
+// Messaging / Chat System
+
 	// TODO get messages securely
 	function getMessages($GroupID) {
 		$mysqli = getDB();
@@ -120,4 +93,14 @@
 
 	    return $resultArray;
 	}
+
+	function sendMessage($GroupID, $Message, $SendTime, $Sender) {
+		$mysqli = getDB();
+
+		$insert = $mysqli->prepare("INSERT INTO messages (ID, GroupID, Message, SendTime, Sender) VALUES (?,?,?,?,?)");
+
+		$insert->bind_param('iisss', $x=0, $GroupID, $Message, $SendTime, $Sender);
+		$insert->execute();
+	}
+	// 
 ?>
