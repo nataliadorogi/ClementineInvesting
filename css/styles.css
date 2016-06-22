@@ -215,3 +215,16 @@ _:-ms-input-placeholder, :root .demo-graph {
 #logoutbuttonnav {
     width: 100%;
 }
+.headed {
+    font-family: 'Montserrat', sans-serif;
+}
+.descripted {
+    font-family: 'Lato', sans-serif;
+}
+.carded {
+    background: #ededed;
+    border-radius: 5px;
+}
+.mdl-navigation__link:hover {
+    transition: ease-in-out 0.3s all;
+}

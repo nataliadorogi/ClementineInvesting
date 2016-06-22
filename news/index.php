@@ -66,13 +66,15 @@ for ($i=0; $i < sizeof($groupIDs); $i++) {
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="../css/colors.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
   </head>
   <body>
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">Dash</span>
+          <span class="mdl-layout-title">News</span>
           <div class="mdl-layout-spacer"></div>
 
           <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
@@ -101,9 +103,9 @@ for ($i=0; $i < sizeof($groupIDs); $i++) {
           </div>
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a href="../dash/" class="active-nav mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Dash</a>
+          <a href="../dash/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Dash</a>
           <a href="../groups/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Groups</a>
-          <a href="../news/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">view_list</i>News</a>
+          <a href="../news/" class="active-nav mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">view_list</i>News</a>
           <a href="../market/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">store</i>Market</a>
           <a href="../settings/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>Settings</a>
           <div class="mdl-layout-spacer"></div>
@@ -112,7 +114,86 @@ for ($i=0; $i < sizeof($groupIDs); $i++) {
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid">
+
           
+
+          <?php
+          // =======   Nasdaq Articles   ======== 
+          // $url = "http://articlefeeds.nasdaq.com/nasdaq/categories?category=Stocks&format=xml";
+
+          // =======   CNN Money - Markets   ======== 
+          // $url = "http://rss.cnn.com/rss/money_markets.rss";
+
+          // =======   CNN Money - The Buzz   ======== 
+          // $url = "http://rss.cnn.com/cnnmoneymorningbuzz?format=xml";
+
+          // =======   MarketWatch - Stocks To Watch   ======== 
+          // $url = "http://feeds.marketwatch.com/marketwatch/StockstoWatch/";
+
+          // =======   MarketWatch - Top Stories   ======== 
+          // $url = "http://feeds.marketwatch.com/marketwatch/topstories/";
+
+          // =======  Forbes - Stocks   ======== 
+          // $url = "http://www.forbes.com/stocks/feed/";
+
+          // xml -> channel -> item[i] -> [guid, link, title, description, pubDate]\
+
+          $batchURLS = [
+            [0, "http://articlefeeds.nasdaq.com/nasdaq/categories?category=Stocks&format=xml", "Nasdaq - Stocks"],
+            [1, "http://rss.cnn.com/rss/money_markets.rss", "CNN Money - Markets"],
+            [2, "http://rss.cnn.com/cnnmoneymorningbuzz?format=xml", "CNN Money - The Buzz"],
+            [3, "http://feeds.marketwatch.com/marketwatch/StockstoWatch/", "MarketWatch- Stocks to Watch"],
+            [4, "http://feeds.marketwatch.com/marketwatch/topstories/", "MarketWatch - Top Stories"],
+            [5, "http://www.forbes.com/stocks/feed/", "Forbes - Stocks"],
+          ];
+
+          $articles = [];
+          for ($k=0; $k < sizeof($batchURLS); $k++) { 
+            $sxml = simplexml_load_file($batchURLS[$k][1]);
+            for ($i=0; $i < sizeof($sxml->channel->item); $i++) { 
+              $x = [$sxml->channel->item[$i]->guid, $sxml->channel->item[$i]->link, $sxml->channel->item[$i]->title, explode("<div class=\"feedflare\"", $sxml->channel->item[$i]->description)[0], strtotime($sxml->channel->item[$i]->pubDate), $sxml->channel->item[$i]->pubDate, $batchURLS[$k][2]];
+              array_push($articles, $x);
+            }
+          }
+
+          usort($articles, function($a, $b) {
+              return $b[4] - $a[4];
+          });
+
+          // for ($i=0; $i < sizeof($sxml->channel->item); $i++) { 
+          //   echo $sxml->channel->item[$i]->title . "<br/>";
+          // }
+          // var_dump($sxml);
+          // echo "</pre>";
+
+          // echo strtotime("Tue, 21 Jun 2016 22:55:26 -0400");
+
+          // echo "<pre>";
+          // var_dump($articles);
+
+          for ($t=0; $t < sizeof($articles); $t++) { 
+            $x = "<div class=\"carded mdl-card amazing mdl-cell mdl-cell--12-col\">
+              <div class=\"mdl-card__title mdl-color-text--grey-50\">
+                <h3 class=\"quote\"><a target=\"_blank\" class=\"headed\" href=".$articles[$t][1].">".$articles[$t][2]."</a></h3>
+              </div>
+              <div class=\"descripted mdl-card__supporting-text mdl-color-text--grey-600\">
+                ".$articles[$t][3]."
+              </div>
+              <div class=\"mdl-card__supporting-text meta mdl-color-text--grey-600\">
+                <div class=\"minilogo\"></div>
+                <div>
+                  <strong>".$articles[$t][6]."</strong><br>
+                  <span>".$articles[$t][5]."</span>
+                </div>
+              </div>
+            </div>";
+              echo $x;
+          }
+
+
+
+          ?>
+
         </div>
       </main>
     </div>

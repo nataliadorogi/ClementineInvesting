@@ -72,7 +72,7 @@ for ($i=0; $i < sizeof($groupIDs); $i++) {
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
       <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">Dash</span>
+          <span class="mdl-layout-title">Market</span>
           <div class="mdl-layout-spacer"></div>
 
           <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
@@ -101,10 +101,10 @@ for ($i=0; $i < sizeof($groupIDs); $i++) {
           </div>
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-          <a href="../dash/" class="active-nav mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Dash</a>
+          <a href="../dash/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Dash</a>
           <a href="../groups/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Groups</a>
           <a href="../news/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">view_list</i>News</a>
-          <a href="../market/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">store</i>Market</a>
+          <a href="../market/" class="active-nav mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">store</i>Market</a>
           <a href="../settings/" class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i>Settings</a>
           <div class="mdl-layout-spacer"></div>
           <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
