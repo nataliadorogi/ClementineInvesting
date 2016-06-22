@@ -1,9 +1,23 @@
 var messages;
 
-var refreshMessage = window.setInterval(refreshMessages, 3000);
+function refreshM() {
+	window.setInterval(refreshMessages, 3000);
+}
 
-function refreshMessages(GroupID) {
-	$.post( "../updateMessages.php", { Group: GroupID }).done(function(data) {
-	    console.log( "Data Loaded: " + data );
+function refreshMessages() {
+	$.post( "../updateMessages.php", {Group: GroupID}).done(function(data) {
+	    messages = JSON.parse(data);
 	  });
+	changeMessages(messages);
+}
+
+function changeMessages(msgs) {
+	$("#messages").innerHTML = msgs;
+	console.log(msgs);
+}
+
+function sendMessage(messaged) {
+	$.post( "sendMessage.php", { GroupID: GroupID, Message: messaged, UserID: userID }).done(function( data ) {
+
+	});
 }

@@ -2,6 +2,8 @@
 
 	header("Access-Control-Allow-Origin: *");
 
+	session_start();
+
 	$db_username = 'bd2a9e8a2f9d09';
 	$db_password = '2cb06a98';
 	$db_server = 'us-cdbr-iron-east-04.cleardb.net';
@@ -63,6 +65,11 @@
 			return false;
 		}
 	}
+
+	function getUsersName($Identifier) {
+		$x = getUser($Identifier, 0);
+		return $x[0][1]." ".$x[0][2];
+	}
 	
 
 // Groups && Group Management
@@ -76,8 +83,19 @@
 	    $insert->execute();
 	}
 
-	function getGroupsByUser($UserID) {
-	    return explode(";", getUser($UserID)[0][8]);
+	function getGroupIDsByUser($UserID) {
+	    return explode(";", getUser($UserID, 0)[0][8]);
+	}
+
+	function getGroupByID($GroupID) {
+		$mysqli = getDB();
+		
+		$statement = $mysqli->prepare("SELECT * FROM groups WHERE ID='$GroupID'");
+	    $statement->execute();
+	    $result = $statement->get_result();
+	    $resultArray = $result->fetch_all(MYSQLI_NUM);
+
+	    return $resultArray;
 	}
 
 // Messaging / Chat System
